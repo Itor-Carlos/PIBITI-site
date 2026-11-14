@@ -2125,6 +2125,43 @@ tbody tr:last-child > * {
   color: var(--ink-soft);
 }
 
+/* ---------- Perfis (autor e orientador) ---------- */
+
+.profile {
+  margin-top: 0;
+}
+
+.profile h2 {
+  margin-bottom: 16px;
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+}
+
+.profile-card h3 {
+  font-size: 1.45rem;
+}
+
+.profile-card .front-tag {
+  margin-bottom: 16px;
+}
+
+.profile-card > p:not(.front-tag):not(.node-label):not(.profile-link) {
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+}
+
+.profile-card .marks {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--line);
+}
+
+.profile-link {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 2px dashed var(--line);
+  font-size: 0.95rem;
+}
+
 /* ---------- Encerramento ---------- */
 
 .closing {
@@ -2339,6 +2376,13 @@ tbody tr:last-child > * {
 }
 
 /* ---------- Telas médias ---------- */
+
+@media (max-width: 1180px) and (min-width: 1041px) {
+  .nav a {
+    padding: 6px 9px;
+    font-size: 0.89rem;
+  }
+}
 
 @media (max-width: 1040px) {
   .nav-toggle {

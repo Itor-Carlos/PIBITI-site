@@ -43,7 +43,11 @@ funcionando.
 7. **Teste você** (`#interface`): login e conversa simulados (dados fictícios)
 8. **Buscador de Editais** (`#editais`): pipeline, capturas reais e a "conta" do experimento
 9. **Aprendizados** (`#frentes`): ARIA, CHIP e Editais, próximo passo e o que faltava no CHIP
-10. **Encerramento e rodapé**: carta de despedida, autoria, instituições e referências
+10. **Sobre mim** (`#sobre-mim`): quem escreveu a página, formação e trabalhos dos quais
+    participou
+11. **Orientação** (`#orientacao`): quem orientou o trabalho e um resumo da trajetória de
+    Hendrik Teixeira Macedo
+12. **Encerramento e rodapé**: carta de despedida, autoria, instituições e referências
 
 ## Rodar localmente
 
