@@ -37,11 +37,13 @@ funcionando.
 2. **Em números**: os quatro números do ano
 3. **O problema** (`#problema`): por que cada projeto de IA refazia a mesma integração
 4. **MCP** (`#mcp`): a analogia da tomada, o diagrama e as três peças do protocolo
-5. **ARIA** (`#aria`): o caminho de um pedido até o SIGAA e as 5 ferramentas MCP
-6. **Teste você** (`#interface`): login e conversa simulados (dados fictícios)
-7. **Buscador de Editais** (`#editais`): pipeline, capturas reais e a "conta" do experimento
-8. **Aprendizados** (`#frentes`): ARIA, CHIP e Editais, próximo passo e o que faltava no CHIP
-9. **Encerramento e rodapé**: carta de despedida, autoria, instituições e referências
+5. **MCP por dentro** (`#mcp-por-dentro`): host, cliente e servidor, o ciclo de uma
+   chamada, as peças de cada lado, transportes e o que a segurança ainda exige
+6. **ARIA** (`#aria`): o caminho de um pedido até o SIGAA e as 5 ferramentas MCP
+7. **Teste você** (`#interface`): login e conversa simulados (dados fictícios)
+8. **Buscador de Editais** (`#editais`): pipeline, capturas reais e a "conta" do experimento
+9. **Aprendizados** (`#frentes`): ARIA, CHIP e Editais, próximo passo e o que faltava no CHIP
+10. **Encerramento e rodapé**: carta de despedida, autoria, instituições e referências
 
 ## Rodar localmente
 

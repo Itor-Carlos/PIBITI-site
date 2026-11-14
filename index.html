@@ -32,6 +32,7 @@
       <nav class="nav" id="nav" aria-label="Navegação principal">
         <a href="#problema">O problema</a>
         <a href="#mcp">MCP</a>
+        <a href="#mcp-por-dentro">MCP por dentro</a>
         <a href="#aria">ARIA</a>
         <a href="#interface">Teste você</a>
         <a href="#editais">Editais</a>
@@ -86,6 +87,7 @@
             <ol>
               <li><a href="#problema">por que isso importa</a></li>
               <li><a href="#mcp">o MCP sem complicação</a></li>
+              <li><a href="#mcp-por-dentro">o MCP por dentro</a></li>
               <li><a href="#aria">o ARIA por dentro</a></li>
               <li><a href="#interface">um chat para você testar</a></li>
               <li><a href="#editais">o Buscador de Editais</a></li>
@@ -219,11 +221,185 @@
       </div>
     </section>
 
-    <!-- 3 · ARIA -->
-    <section class="section" id="aria">
+    <!-- 3 · MCP POR DENTRO -->
+    <section class="section" id="mcp-por-dentro">
       <div class="container">
         <header class="section-head">
-          <span class="kicker">3. primeiro caso: o ARIA</span>
+          <span class="kicker">3. mcp por dentro</span>
+          <h2>Por baixo do capô, o MCP é uma conversa com regras bem combinadas.</h2>
+          <p>A analogia da tomada explica por que o protocolo existe. Agora quero abrir a tomada: quem conversa com quem, que recados são trocados quando o agente pede uma ferramenta e o que continua sendo responsabilidade de quem constrói o sistema.</p>
+        </header>
+
+        <div class="aria-says">
+          <img src="assets/aria-avatar.png" alt="" width="52" height="52">
+          <p><span class="who">ARIA</span>Essa parte é mais técnica, mas eu traduzo. É mais ou menos o que acontece entre eu escolher uma ferramenta e ela me devolver a resposta.</p>
+        </div>
+
+        <figure class="figure">
+          <div class="diagram" role="img" aria-label="Diagrama com os três papéis do MCP: o host é o aplicativo que a pessoa usa; dentro dele, um cliente MCP mantém a conexão com cada servidor; o servidor MCP expõe ferramentas, recursos e prompts e conversa com o sistema real.">
+            <div class="node">
+              <span class="node-label">quem você usa</span>
+              <h3>Host</h3>
+              <p>O aplicativo em que a conversa acontece: um chat, uma IDE ou um app de desktop. Ele guarda a sessão, mostra as respostas e decide o que pedir de cada servidor.</p>
+              <ul class="tags"><li>chat</li><li>IDE</li><li>app desktop</li></ul>
+            </div>
+
+            <div class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 64 24"><path d="M3 13 C 18 8, 34 17, 56 11 M56 11 l-8-6 M56 11 l-7 7"/></svg>
+              <span>abre conexões</span>
+            </div>
+
+            <div class="node node-mid">
+              <span class="node-label">o mensageiro</span>
+              <h3>Cliente MCP</h3>
+              <p>Dentro do host, existe um cliente para cada servidor. Ele negocia a versão, pergunta quais ferramentas existem e envia as chamadas em <strong>JSON-RPC 2.0</strong>.</p>
+              <ul class="tags"><li>initialize</li><li>tools/list</li><li>tools/call</li></ul>
+            </div>
+
+            <div class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 64 24"><path d="M3 11 C 20 16, 36 6, 56 12 M56 12 l-7-7 M56 12 l-8 6"/></svg>
+              <span>fala com</span>
+            </div>
+
+            <div class="node">
+              <span class="node-label">quem conhece o sistema</span>
+              <h3>Servidor MCP</h3>
+              <p>Expõe ferramentas, recursos e prompts e traduz cada pedido para a linguagem do sistema real. É aqui que o Selenium clica no SIGAA ou o SQL consulta o banco.</p>
+              <ul class="tags"><li>FastMCP</li><li>SIGAA</li><li>PostgreSQL</li></ul>
+            </div>
+          </div>
+          <figcaption class="hand-cap">Host, cliente e servidor não são a mesma coisa: o host é o app, o cliente é a conexão e o servidor é quem sabe fazer o trabalho.</figcaption>
+        </figure>
+
+        <h3 class="subhead">O caminho de um pedido, em cinco passos</h3>
+        <figure class="figure">
+          <ol class="flow flow-5">
+            <li><strong>Negociação</strong><small>Cliente e servidor se apresentam, combinam a versão do protocolo e dizem o que cada um sabe fazer.</small><span class="tech">initialize</span></li>
+            <li><strong>Descoberta</strong><small>O cliente pergunta quais ferramentas existem e recebe nome, descrição e formato dos argumentos.</small><span class="tech">tools/list</span></li>
+            <li><strong>Escolha</strong><small>O modelo lê as descrições e decide se alguma ferramenta resolve o pedido. Se nenhuma servir, ele responde sem inventar.</small><span class="tech">o modelo decide</span></li>
+            <li><strong>Chamada</strong><small>O cliente envia o nome da ferramenta e os argumentos no formato combinado.</small><span class="tech">tools/call</span></li>
+            <li><strong>Resposta</strong><small>O servidor devolve um resultado estruturado, e o modelo usa isso para escrever a resposta final.</small><span class="tech">result</span></li>
+          </ol>
+          <figcaption class="hand-cap">O modelo nunca vê o SIGAA por dentro: ele só vê o cardápio de ferramentas e o resultado de cada chamada.</figcaption>
+        </figure>
+
+        <h3 class="subhead">Quem oferece o quê</h3>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Peças do MCP por lado">
+          <table class="stack-sm">
+            <caption>As peças que cada lado pode oferecer</caption>
+            <thead>
+              <tr>
+                <th scope="col">Peça</th>
+                <th scope="col">Quem oferece</th>
+                <th scope="col">Para que serve</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><code>tools</code></th>
+                <td><span class="pill">servidor</span></td>
+                <td>Ações que o modelo pode executar, com entrada e saída declaradas.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>resources</code></th>
+                <td><span class="pill">servidor</span></td>
+                <td>Dados e documentos que o cliente pode ler como contexto.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>prompts</code></th>
+                <td><span class="pill">servidor</span></td>
+                <td>Modelos de conversa reutilizáveis, que dá para versionar.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>sampling</code></th>
+                <td><span class="pill pill-write">cliente</span></td>
+                <td>Deixa o servidor pedir ao host uma resposta do modelo, sem carregar uma chave própria.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>roots</code></th>
+                <td><span class="pill pill-write">cliente</span></td>
+                <td>Indica ao servidor quais pastas e arquivos fazem parte do contexto.</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>elicitation</code></th>
+                <td><span class="pill pill-write">cliente</span></td>
+                <td>Permite que o servidor peça à pessoa uma informação que faltou.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">Neste trabalho as <strong>tools</strong> foram o centro, porque o problema era agir sobre os sistemas. Resources e prompts entram quando o caso pede contexto pronto ou um roteiro de conversa; sampling, roots e elicitation são recursos do lado do cliente, que ajudam a manter o controle com quem usa.</p>
+
+        <h3 class="subhead">Dois jeitos de levar esses recados</h3>
+        <div class="compare">
+          <article class="card">
+            <p class="node-label">processo local</p>
+            <h3>stdio</h3>
+            <p>O host inicia o servidor como um processo filho e conversa pela entrada e saída padrão. É simples, rápido e ótimo para ferramentas locais, mas só funciona na mesma máquina do host.</p>
+            <ul class="marks marks-yes">
+              <li>Nenhuma porta aberta na rede</li>
+              <li>Fácil de rodar e depurar</li>
+              <li>Não atende vários clientes remotos</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <p class="node-label">pela rede</p>
+            <h3>Streamable HTTP</h3>
+            <p>O servidor fica atrás de uma URL e aceita requisições HTTP, com streaming quando precisa. É o caminho para um MCP institucional, usado por vários clientes ao mesmo tempo.</p>
+            <ul class="marks marks-yes">
+              <li>Acesso remoto sem instalar nada</li>
+              <li>Sessão, autenticação e escopo</li>
+              <li>Exige mais cuidado com segurança</li>
+            </ul>
+          </article>
+        </div>
+
+        <details class="more">
+          <summary>Ver o handshake de perto</summary>
+          <div class="more-body">
+            <div class="code">
+              <div class="code-head">
+                <span>primeira mensagem · <code>initialize</code></span>
+                <span>JSON-RPC 2.0</span>
+              </div>
+              <pre tabindex="0" aria-label="Exemplo de requisição initialize do MCP"><code>{
+  <span class="tok-key">"jsonrpc"</span>: <span class="tok-str">"2.0"</span>,
+  <span class="tok-key">"id"</span>: 1,
+  <span class="tok-key">"method"</span>: <span class="tok-str">"initialize"</span>,
+  <span class="tok-key">"params"</span>: {
+    <span class="tok-key">"protocolVersion"</span>: <span class="tok-str">"2025-11-25"</span>,
+    <span class="tok-key">"capabilities"</span>: {
+      <span class="tok-key">"roots"</span>: { <span class="tok-key">"listChanged"</span>: true },
+      <span class="tok-key">"sampling"</span>: {}
+    },
+    <span class="tok-key">"clientInfo"</span>: {
+      <span class="tok-key">"name"</span>: <span class="tok-str">"aria-chat"</span>,
+      <span class="tok-key">"version"</span>: <span class="tok-str">"1.0.0"</span>
+    }
+  }
+}</code></pre>
+              <div class="code-result">
+                <span class="code-result-label">o que o servidor responde</span>
+                <p>“Versão aceita. Eu ofereço <code>tools</code>, e elas podem mudar durante a sessão.”</p>
+                <small>Exemplo simplificado: na resposta vêm a versão combinada, as capacidades do servidor e o nome dele. A versão é negociada a cada conexão.</small>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <aside class="promise">
+          <h3>O MCP não resolve segurança sozinho</h3>
+          <p>O protocolo padroniza a conversa, não as permissões. Quem monta o sistema ainda precisa decidir <mark>quem pode chamar cada ferramenta</mark>, com qual credencial, por quanto tempo e com qual registro. Em transporte HTTP, a recomendação é OAuth 2.1, com tokens de escopo curto e vinculados àquele servidor; ações destrutivas pedem confirmação humana. Foi por isso que, no ARIA, eu fiz o agente contar qual ferramenta usou: auditoria começa com visibilidade.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 4 · ARIA -->
+    <section class="section section-tint" id="aria">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">4. primeiro caso: o ARIA</span>
           <h2>O SIGAA não tem API pública. Então ensinei a IA a usar o sistema como a gente usa.</h2>
           <p>Sem uma API, o caminho foi seguir os passos de quem usa o SIGAA no dia a dia: automatizei o navegador e embrulhei cada operação num servidor MCP. Assim o agente conversa em português com o sistema acadêmico sem precisar saber como ele funciona por dentro.</p>
         </header>
@@ -337,11 +513,11 @@
       </div>
     </section>
 
-    <!-- 4 · TESTE VOCÊ -->
-    <section class="section section-tint" id="interface">
+    <!-- 5 · TESTE VOCÊ -->
+    <section class="section" id="interface">
       <div class="container">
         <header class="section-head">
-          <span class="kicker">4. sua vez</span>
+          <span class="kicker">5. sua vez</span>
           <h2>Faça login e peça alguma coisa ao ARIA.</h2>
           <p>Recriei as telas em HTML e CSS só para esta página, com dados inventados. Entre, clique numa sugestão ou escreva do seu jeito, e repare qual ferramenta o ARIA escolhe.</p>
         </header>
@@ -453,10 +629,10 @@
       </div>
     </section>
 
-    <section class="section" id="editais">
+    <section class="section section-tint" id="editais">
       <div class="container">
         <header class="section-head">
-          <span class="kicker">5. segundo caso: o Buscador de Editais</span>
+          <span class="kicker">6. segundo caso: o Buscador de Editais</span>
           <h2>De editais espalhados pela internet a uma busca que funciona.</h2>
           <p>Os editais de fomento ficam espalhados pelos sites das agências, cada um num formato. O Buscador de Editais coleta esses documentos, separa os trechos que importam e pede a um modelo de linguagem para transformar tudo em campos pesquisáveis, como prazo, valor e público-alvo.</p>
 
@@ -561,11 +737,11 @@
       </div>
     </section>
 
-    <!-- 6 · APRENDIZADOS -->
-    <section class="section section-tint" id="frentes">
+    <!-- 7 · APRENDIZADOS -->
+    <section class="section" id="frentes">
       <div class="container">
         <header class="section-head">
-          <span class="kicker">6. o que eu aprendi</span>
+          <span class="kicker">7. o que eu aprendi</span>
           <h2>Três frentes bem diferentes, e os mesmos tropeços em todas.</h2>
           <p>Usei o MCP em três situações: um sistema legado, uma implementação de terceiros que já estava em produção e um pipeline completo. Eram contextos bem diferentes, mas os obstáculos foram praticamente os mesmos.</p>
         </header>
@@ -675,6 +851,7 @@
         <h2>Navegar</h2>
         <a href="#problema">O problema</a>
         <a href="#mcp">Model Context Protocol</a>
+        <a href="#mcp-por-dentro">MCP por dentro</a>
         <a href="#aria">Assistente ARIA</a>
         <a href="#editais">Buscador de Editais</a>
         <a href="https://editais.dev.ufs.br/" target="_blank" rel="noopener">editais.dev.ufs.br ↗<span class="visually-hidden"> (abre em nova aba)</span></a>
