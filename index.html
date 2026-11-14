@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itor · IA conversando com os sistemas da UFS · PIBITI</title>
+  <meta name="description" content="Minha apresentação final do PIBITI: como liguei agentes de IA aos sistemas da UFS usando microsserviços e o Model Context Protocol. Com o assistente ARIA e o Buscador de Editais.">
+  <meta name="theme-color" content="#fbf7ef">
+  <meta property="og:title" content="Passei um ano ensinando a IA a conversar com os sistemas da UFS">
+  <meta property="og:description" content="Microsserviços, Model Context Protocol e dois casos de verdade: o assistente ARIA e o Buscador de Editais.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/png" href="assets/aria-avatar.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100;1,9..144,400..700,0..100&family=Figtree:ital,wght@0,400..700;1,400..700&family=Caveat:wght@500..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header" id="topo">
+    <div class="container header-inner">
+      <a class="brand" href="#topo" aria-label="Voltar ao começo">
+        <img src="assets/aria-avatar.png" alt="" width="36" height="36">
+        <span>
+          <span class="brand-name">Itor</span>
+          <span class="brand-sub">PIBITI · UFS</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Navegação principal">
+        <a href="#problema">O problema</a>
+        <a href="#mcp">MCP</a>
+        <a href="#aria">ARIA</a>
+        <a href="#interface">Teste você</a>
+        <a href="#editais">Editais</a>
+        <a href="#frentes">Aprendizados</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="hi">Oi, eu sou o Itor!</p>
+
+          <h1>Passei um ano ensinando a IA a <span class="scribble">conversar</span> com os sistemas da UFS.</h1>
+
+          <p class="lead">Esta página é a versão de bolso da minha apresentação final do PIBITI. Fui bolsista no COPIS, dentro da STI, e meu trabalho foi encontrar um jeito organizado de ligar agentes de inteligência artificial aos sistemas da universidade, usando <mark>microsserviços</mark> e um padrão chamado <mark>Model Context Protocol</mark>, o MCP.</p>
+
+          <p class="lead">Vou te mostrar o que aprendi com dois projetos de verdade: o <strong>ARIA</strong>, um assistente que resolve coisas no SIGAA por você, e o <strong>Buscador de Editais</strong>, que junta editais de fomento num lugar só. Se você chegou pelo QR code, fica à vontade: dá para ler com calma e clicar em tudo.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#interface">Quero conversar com o ARIA</a>
+            <a class="btn btn-ghost" href="#editais">Ver o Buscador de Editais</a>
+          </div>
+
+          <p class="byline">
+            <span>Itor Carlos Souza Queiroz</span>
+            <span aria-hidden="true">·</span>
+            <span>Ciência da Computação</span>
+            <span aria-hidden="true">·</span>
+            <span>bolsa de set/2025 a ago/2026</span>
+          </p>
+        </div>
+
+        <div class="hero-side">
+          <div class="hello">
+            <img class="hello-avatar" src="assets/aria-avatar.png" alt="ARIA, o robozinho mascote com o brasão da UFS" width="96" height="96">
+            <p class="bubble">
+              <span class="who">ARIA</span>
+              <span id="greeting">Oi!</span> Eu sou o ARIA, o assistente que o Itor construiu para conversar com o SIGAA.
+              <a href="#interface">Quer ver como eu funciono?</a>
+            </p>
+          </div>
+
+          <nav class="sticky taped" aria-labelledby="toc-title">
+            <h2 id="toc-title">O que tem por aqui</h2>
+            <ol>
+              <li><a href="#problema">por que isso importa</a></li>
+              <li><a href="#mcp">o MCP sem complicação</a></li>
+              <li><a href="#aria">o ARIA por dentro</a></li>
+              <li><a href="#interface">um chat para você testar</a></li>
+              <li><a href="#editais">o Buscador de Editais</a></li>
+              <li><a href="#frentes">o que eu aprendi</a></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <section class="numbers" aria-labelledby="numeros-titulo">
+      <div class="container">
+        <h2 class="numbers-title" id="numeros-titulo">o ano em quatro números</h2>
+        <div class="numbers-grid">
+          <p class="number"><b>3</b><span>frentes de trabalho que acabaram se conectando</span></p>
+          <p class="number"><b>5</b><span>ferramentas que o ARIA aprendeu a usar no SIGAA</span></p>
+          <p class="number"><b>&gt;90%</b><span>dos dados dos editais extraídos do jeito certo</span></p>
+          <p class="number"><b>&lt;US$&nbsp;5</b><span>por mês, o custo estimado do buscador funcionando</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="problema">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">1. o problema</span>
+          <h2>Cada projeto de IA reinventava a mesma roda.</h2>
+          <p>Na universidade, quem começa um projeto com IA monta do zero o jeito de buscar os dados, de passar contexto ao modelo e de controlar quem acessa o quê. Isso gera retrabalho, deixa difícil saber o que a IA consultou (e por quê) e impede que um projeto aproveite o que o outro já fez.</p>
+        </header>
+
+        <div class="compare">
+          <article class="card card-before">
+            <h3>Do jeito que estava</h3>
+            <ul class="marks marks-no">
+              <li>Cada projeto refaz do zero o acesso aos dados</li>
+              <li>A integração fica presa a um modelo ou a um fornecedor</li>
+              <li>Regras importantes ficam escondidas dentro do prompt</li>
+              <li>Fica difícil saber o que a IA fez, e quase impossível repetir</li>
+            </ul>
+          </article>
+
+          <article class="card card-after">
+            <p class="annot" aria-hidden="true">
+              bem melhor, né?
+              <svg viewBox="0 0 60 40"><path d="M52 4 C 40 6, 22 12, 12 30 M12 30 l 1-10 M12 30 l 9-4"/></svg>
+            </p>
+            <h3>Com o MCP no meio do caminho</h3>
+            <ul class="marks marks-yes">
+              <li>Cada ferramenta tem nome, descrição e entradas bem definidas</li>
+              <li>Qualquer cliente compatível reaproveita a mesma integração</li>
+              <li>O modelo e o sistema seguem um combinado claro</li>
+              <li>Dá para saber qual ferramenta foi usada e por quê</li>
+            </ul>
+          </article>
+        </div>
+
+        <figure class="quote">
+          <p class="quote-intro">No relatório eu escrevi assim, do jeito formal:</p>
+          <blockquote>
+            <p>“A duplicação de esforços dificulta a governança, a auditoria e a reutilização de componentes entre diferentes projetos institucionais.”</p>
+          </blockquote>
+          <figcaption>do meu relatório final do PIBITI</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="mcp">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">2. a ideia central</span>
+          <h2>O MCP é tipo uma tomada que serve para todo mundo.</h2>
+          <p>Lembra quando cada marca de celular tinha um carregador diferente? Ligar uma IA aos sistemas era mais ou menos assim. O Model Context Protocol é um padrão aberto que resolve isso: em vez de o modelo adivinhar como falar com cada sistema, ele recebe um combinado claro dizendo o que a ferramenta faz, o que ela precisa receber e o que ela devolve.</p>
+        </header>
+
+        <figure class="figure">
+          <div class="diagram" role="img" aria-label="Diagrama: o agente de IA pede uma ferramenta ao MCP; cliente MCP e servidor FastMCP conversam por JSON-RPC 2.0; o servidor busca o contexto no SIGAA, no PostgreSQL com pgvector e nas APIs dos portais de fomento.">
+            <div class="node">
+              <span class="node-label">quem pergunta</span>
+              <h3>Agente de IA</h3>
+              <p>Entende o que a pessoa quer, escolhe a ferramenta e escreve a resposta.</p>
+              <ul class="tags"><li>Agno</li><li>GPT-4o</li><li>GPT-4.1</li></ul>
+            </div>
+
+            <div class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 64 24"><path d="M3 13 C 18 8, 34 17, 56 11 M56 11 l-8-6 M56 11 l-7 7"/></svg>
+              <span>pede uma ferramenta</span>
+            </div>
+
+            <div class="node node-mid">
+              <span class="node-label">o combinado</span>
+              <h3>MCP Client ⇄ FastMCP</h3>
+              <p>Cliente e servidor conversam por <strong>JSON-RPC 2.0</strong>: um descobre quais ferramentas existem, chama a certa com os dados no formato certo e recebe o resultado organizado.</p>
+              <ul class="tags"><li>JSON-RPC 2.0</li><li>tools</li><li>resources</li><li>prompts</li></ul>
+            </div>
+
+            <div class="arrow" aria-hidden="true">
+              <svg viewBox="0 0 64 24"><path d="M3 11 C 20 16, 36 6, 56 12 M56 12 l-7-7 M56 12 l-8 6"/></svg>
+              <span>busca o contexto</span>
+            </div>
+
+            <div class="node">
+              <span class="node-label">onde estão os dados</span>
+              <h3>Sistemas e bases</h3>
+              <ul class="sources">
+                <li><strong>SIGAA</strong><span>sistema legado, acessado via Selenium</span></li>
+                <li><strong>PostgreSQL + pgvector</strong><span>editais e embeddings</span></li>
+                <li><strong>APIs e portais</strong><span>CNPq, FAPITEC e FINEP</span></li>
+              </ul>
+            </div>
+          </div>
+          <figcaption class="hand-cap">O agente não precisa saber como cada sistema funciona: ele fala com o servidor MCP, e o servidor cuida do resto.</figcaption>
+        </figure>
+
+        <h3 class="subhead">O MCP oferece três tipos de peça</h3>
+        <dl class="pieces">
+          <div>
+            <dt>Tools</dt>
+            <dd>Ações que o modelo pode executar, com entrada e saída declaradas.</dd>
+          </div>
+          <div>
+            <dt>Resources</dt>
+            <dd>Dados e documentos que ele pode ler como contexto.</dd>
+          </div>
+          <div>
+            <dt>Prompts</dt>
+            <dd>Modelos de conversa reutilizáveis, que dá para versionar.</dd>
+          </div>
+        </dl>
+
+        <p class="footnote">Neste trabalho eu foquei nas <strong>tools</strong>: transformei operações do SIGAA e etapas do pipeline de editais em ferramentas que qualquer agente compatível consegue usar.</p>
+      </div>
+    </section>
+
+    <!-- 3 · ARIA -->
+    <section class="section" id="aria">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">3. primeiro caso: o ARIA</span>
+          <h2>O SIGAA não tem API pública. Então ensinei a IA a usar o sistema como a gente usa.</h2>
+          <p>Sem uma API, o caminho foi seguir os passos de quem usa o SIGAA no dia a dia: automatizei o navegador e embrulhei cada operação num servidor MCP. Assim o agente conversa em português com o sistema acadêmico sem precisar saber como ele funciona por dentro.</p>
+        </header>
+
+        <div class="aria-says">
+          <img src="assets/aria-avatar.png" alt="" width="52" height="52">
+          <p><span class="who">ARIA</span>Essa parte é comigo! Você pede, eu escolho a ferramenta certa e vou ao SIGAA por você.</p>
+        </div>
+
+        <figure class="figure">
+          <ol class="flow flow-5">
+            <li><strong>Você</strong><small>pergunta do seu jeito, em português</small></li>
+            <li><strong>Chatbot + FastAPI</strong><small>a tela de conversa e a camada REST</small></li>
+            <li><strong>Agente Agno</strong><small>decide qual ferramenta usar</small></li>
+            <li><strong>Servidor FastMCP</strong><small>oferece cinco ferramentas bem descritas</small></li>
+            <li><strong>SIGAA</strong><small>onde o Selenium clica por você</small></li>
+          </ol>
+          <figcaption class="hand-cap">O caminho de um pedido, da sua pergunta até o SIGAA.</figcaption>
+        </figure>
+
+        <details class="more">
+          <summary>Ver as cinco ferramentas do ARIA</summary>
+          <div class="more-body">
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Ferramentas MCP do ARIA">
+              <table>
+                <caption>As ferramentas que o servidor do ARIA oferece</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Ferramenta</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">O que faz</th>
+                    <th scope="col">Recebe</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><code>marcar_caixa_postal</code></th>
+                    <td><span class="pill pill-write">escrita</span></td>
+                    <td>Marca todas as mensagens da caixa postal como lidas.</td>
+                    <td><code>usuario</code>, <code>senha</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>get_minhas_atividades</code></th>
+                    <td><span class="pill">leitura</span></td>
+                    <td>Coleta todas as tarefas das turmas no SIGAA.</td>
+                    <td><code>usuario</code>, <code>senha</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>get_plano_atividades</code></th>
+                    <td><span class="pill">leitura</span></td>
+                    <td>Coleta os planos de atividades de todas as turmas.</td>
+                    <td><code>usuario</code>, <code>senha</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>coletar_historico</code></th>
+                    <td><span class="pill">leitura</span></td>
+                    <td>Coleta o histórico acadêmico completo do aluno.</td>
+                    <td><code>usuario</code>, <code>senha</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><code>gerar_avisos</code></th>
+                    <td><span class="pill pill-write">escrita</span></td>
+                    <td>Publica avisos no SIGAA para uma ou mais turmas a partir de uma lista estruturada.</td>
+                    <td><code>nome_turma</code>, <code>numero_turma</code>, <code>codigo_turma</code>, <code>titulo</code>, <code>mensagem</code>, <code>usuario</code>, <code>senha</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="more">
+          <summary>Ver como é uma chamada por dentro</summary>
+          <div class="more-body">
+            <div class="code">
+              <div class="code-head">
+                <span>chamada MCP · <code>gerar_avisos</code></span>
+                <span>JSON-RPC 2.0</span>
+              </div>
+              <pre tabindex="0" aria-label="Código da chamada MCP da ferramenta gerar_avisos"><code>{
+  <span class="tok-key">"jsonrpc"</span>: <span class="tok-str">"2.0"</span>,
+  <span class="tok-key">"id"</span>: 1,
+  <span class="tok-key">"method"</span>: <span class="tok-str">"tools/call"</span>,
+  <span class="tok-key">"params"</span>: {
+    <span class="tok-key">"name"</span>: <span class="tok-str">"gerar_avisos"</span>,
+    <span class="tok-key">"arguments"</span>: {
+      <span class="tok-key">"usuario"</span>: <span class="tok-str">"aluno.ufs"</span>,
+      <span class="tok-key">"senha"</span>: <span class="tok-str">"•••"</span>,
+      <span class="tok-key">"avisos"</span>: [{
+        <span class="tok-key">"nome_turma"</span>: <span class="tok-str">"Inteligência Artificial"</span>,
+        <span class="tok-key">"codigo_turma"</span>: <span class="tok-str">"COMP0427"</span>,
+        <span class="tok-key">"titulo"</span>: <span class="tok-str">"Prova mantida"</span>,
+        <span class="tok-key">"mensagem"</span>: <span class="tok-str">"A prova de amanhã está mantida."</span>
+      }]
+    }
+  }
+}</code></pre>
+              <div class="code-result">
+                <span class="code-result-label">o que a ferramenta devolve</span>
+                <p>“Aviso publicado para a turma Inteligência Artificial (COMP0427).”</p>
+                <small>Versão simplificada da chamada que o agente faz. As credenciais foram omitidas.</small>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <aside class="promise">
+          <h3>Uma coisa de que eu não abri mão</h3>
+          <p>O ARIA sempre <mark>conta qual ferramenta usou e por quê</mark>. Parece detalhe, mas assim cada resposta também vira um registro fácil de entender, e esse é o primeiro passo para conseguir auditar o que a IA faz.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 4 · TESTE VOCÊ -->
+    <section class="section section-tint" id="interface">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">4. sua vez</span>
+          <h2>Faça login e peça alguma coisa ao ARIA.</h2>
+          <p>Recriei as telas em HTML e CSS só para esta página, com dados inventados. Entre, clique numa sugestão ou escreva do seu jeito, e repare qual ferramenta o ARIA escolhe.</p>
+        </header>
+
+        <div class="aria-says">
+          <img src="assets/aria-avatar.png" alt="" width="52" height="52">
+          <p><span class="who">ARIA</span>Pode clicar à vontade, eu não mordo. É tudo de mentirinha: nenhuma senha sai do seu navegador.</p>
+        </div>
+
+        <div class="playground">
+          <div class="playground-copy">
+            <div class="tabs" role="tablist" aria-label="Telas do ARIA">
+              <button class="tab" id="tabLogin" type="button" role="tab" aria-selected="true" aria-controls="viewLogin" data-view="login">Login</button>
+              <button class="tab" id="tabChat" type="button" role="tab" aria-selected="false" aria-controls="viewChat" data-view="chat" tabindex="-1">Conversa</button>
+            </div>
+
+            <div class="tab-note" aria-live="polite">
+              <h3 id="uiNoteTitle">Entrar com o login da UFS</h3>
+              <p id="uiNoteText">Você entra com o mesmo login do SIGAA. Daí em diante, é só perguntar e receber a resposta, sem se perder nos menus do sistema.</p>
+            </div>
+
+            <ol class="steps">
+              <li>Você entra com o login do SIGAA</li>
+              <li>Pergunta em português, do seu jeito</li>
+              <li>O agente escolhe a ferramenta MCP</li>
+              <li>A resposta conta o que foi feito</li>
+            </ol>
+
+            <p class="demo-note">É só uma demonstração, sem servidor por trás. Mesmo assim, não digite senhas de verdade.</p>
+          </div>
+
+          <figure class="figure figure-flush">
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                <div class="browser-url">aria.ufs.br</div>
+                <span class="browser-badge">demonstração</span>
+              </div>
+
+              <div class="browser-body">
+                <div class="app-view is-active" id="viewLogin" role="tabpanel" aria-labelledby="tabLogin">
+                  <div class="login-screen">
+                    <div class="login-brand">
+                      <img src="assets/aria-avatar.png" alt="" width="48" height="48">
+                      <div>
+                        <strong>ARIA</strong>
+                        <small>assistente acadêmico da UFS</small>
+                      </div>
+                    </div>
+
+                    <h4>Que bom te ver por aqui</h4>
+                    <p class="login-sub">Use o mesmo login do SIGAA.</p>
+
+                    <form class="login-form" id="loginForm">
+                      <label>
+                        Usuário
+                        <input type="text" value="aluno.ufs" autocomplete="off">
+                      </label>
+                      <label>
+                        Senha
+                        <input type="password" value="demo1234" autocomplete="off">
+                      </label>
+                      <button class="login-btn" type="submit">Entrar</button>
+                    </form>
+
+                    <p class="login-foot">Conexão simulada: nada sai do seu navegador.</p>
+                  </div>
+                </div>
+
+                <!-- CONVERSA -->
+                <div class="app-view" id="viewChat" role="tabpanel" aria-labelledby="tabChat">
+                  <div class="chat-screen">
+                    <div class="chat-head">
+                      <img src="assets/aria-avatar.png" alt="" width="36" height="36">
+                      <div>
+                        <strong>ARIA</strong>
+                        <small id="chatStatus"><span class="status-dot"></span> online</small>
+                      </div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages" role="log" aria-live="polite">
+                      <div class="msg bot">
+                        <img class="msg-avatar" src="assets/aria-avatar.png" alt="" width="28" height="28">
+                        <div class="msg-stack">
+                          <div class="msg-bubble">Oi! Eu sou o ARIA. Consigo olhar seu histórico, suas atividades e sua caixa postal, e até publicar avisos no SIGAA. Aqui os dados são de mentira, então pode testar sem medo. Em que posso ajudar?</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="chat-suggestions" id="chatSuggestions">
+                      <button type="button" data-prompt="historico">Resuma meu histórico acadêmico</button>
+                      <button type="button" data-prompt="atividades">Quais são minhas atividades deste semestre?</button>
+                      <button type="button" data-prompt="caixa">Marque minha caixa postal como lida</button>
+                      <button type="button" data-prompt="aviso">Avise a turma de IA que a prova será mantida</button>
+                    </div>
+
+                    <form class="chat-input" id="chatForm">
+                      <input type="text" id="chatInput" placeholder="Escreva para o ARIA…" autocomplete="off" aria-label="Mensagem para o ARIA">
+                      <button type="submit" aria-label="Enviar mensagem">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-6 8 6 8z"/></svg>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="editais">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">5. segundo caso: o Buscador de Editais</span>
+          <h2>De editais espalhados pela internet a uma busca que funciona.</h2>
+          <p>Os editais de fomento ficam espalhados pelos sites das agências, cada um num formato. O Buscador de Editais coleta esses documentos, separa os trechos que importam e pede a um modelo de linguagem para transformar tudo em campos pesquisáveis, como prazo, valor e público-alvo.</p>
+
+          <div class="visit">
+            <a class="btn btn-primary" href="https://editais.dev.ufs.br/" target="_blank" rel="noopener">
+              Abrir o Buscador de Editais
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+              <span class="visually-hidden">(abre em nova aba)</span>
+            </a>
+            <p class="visit-note">editais.dev.ufs.br · é a versão de desenvolvimento, então pode mudar de vez em quando</p>
+          </div>
+        </header>
+
+        <div class="aria-says">
+          <img src="assets/aria-avatar.png" alt="" width="52" height="52">
+          <p><span class="who">ARIA</span>Esse é o meu primo que lê edital. Ele poupa muita gente de abrir PDF atrás de PDF.</p>
+        </div>
+
+        <figure class="figure">
+          <ol class="flow flow-6">
+            <li><strong>Coleta</strong><small>um robô visita os sites das agências e baixa os editais</small><span class="tech">Requests · BeautifulSoup4</span></li>
+            <li><strong>Recorte</strong><small>o texto é dividido em pedaços que fazem sentido sozinhos</small><span class="tech">LangChain</span></li>
+            <li><strong>Vetorização</strong><small>cada pedaço vira uma lista de números que guarda o seu significado</small><span class="tech">text-embedding-3-small</span></li>
+            <li><strong>Busca</strong><small>o sistema encontra os trechos que realmente importam</small><span class="tech">PostgreSQL · pgvector</span></li>
+            <li><strong>Extração</strong><small>o modelo de linguagem preenche os campos: prazo, valor, público</small><span class="tech">GPT-4o-mini</span></li>
+            <li><strong>Portal</strong><small>sem repetições, o edital aparece pronto para ser buscado</small><span class="tech">Next.js</span></li>
+          </ol>
+          <figcaption class="hand-cap">A viagem de um edital: do site da agência até o portal.</figcaption>
+        </figure>
+
+        <div class="shots">
+          <p class="shots-note">Agora é o sistema de verdade! Toque numa imagem para ver maior, ou <a href="https://editais.dev.ufs.br/" target="_blank" rel="noopener">abra o buscador<span class="visually-hidden"> (abre em nova aba)</span></a> e procure você mesmo.</p>
+
+          <figure class="photo photo-main">
+            <button class="photo-btn" type="button" data-full="assets/editais-portal.webp" aria-label="Ampliar: a porta de entrada do portal">
+              <span class="photo-frame taped"><img src="assets/editais-portal.webp" alt="Página inicial do portal: busca no topo, três contadores (27 editais, 1 previsto, 26 em andamento) e a lista de editais previstos." width="1600" height="805" loading="lazy"></span>
+            </button>
+            <figcaption><b>A porta de entrada</b>Quem procura edital cai aqui: uma busca, três números e os editais separados entre previstos e em andamento.</figcaption>
+          </figure>
+
+          <div class="photo-row">
+            <figure class="photo">
+              <button class="photo-btn" type="button" data-full="assets/editais-detalhe.webp" aria-label="Ampliar: detalhes de um edital">
+                <span class="photo-frame taped"><img src="assets/editais-detalhe.webp" alt="Janela com os detalhes de um edital: status, fonte, datas, valor, público-alvo e botões para baixar o PDF ou acessar o edital." width="1600" height="803" loading="lazy"></span>
+              </button>
+              <figcaption><b>Clicou num edital?</b>Aparecem prazo, valor, público-alvo e dois botões: baixar o PDF ou ir direto à fonte.</figcaption>
+            </figure>
+            <figure class="photo">
+              <button class="photo-btn" type="button" data-full="assets/editais-fontes.webp" aria-label="Ampliar: painel das fontes de fomento">
+                <span class="photo-frame taped"><img src="assets/editais-fontes.webp" alt="Painel administrativo com as fontes de fomento (CNPq, FUNDECI, FBB, Fundação Grupo Boticário), cada uma com interruptor, total de editais e botão de executar extração." width="1600" height="805" loading="lazy"></span>
+              </button>
+              <figcaption><b>Para quem cuida do portal</b>Cada fonte pode ser ligada, desligada e rodada na hora, e o painel mostra quantos editais ela já trouxe.</figcaption>
+            </figure>
+            <figure class="photo">
+              <button class="photo-btn" type="button" data-full="assets/editais-logs.webp" aria-label="Ampliar: registro das extrações">
+                <span class="photo-frame taped"><img src="assets/editais-logs.webp" alt="Tela de logs de extração: 50 extrações, 48 sucessos, 2 erros, 1159 itens descartados e custo de US$ 0,0671 em 124 chamadas ao modelo." width="1600" height="805" loading="lazy"></span>
+              </button>
+              <figcaption><b>Nada acontece escondido</b>Cada extração fica registrada, com o que foi descartado e quanto o modelo custou: US$&nbsp;0,0671 em 124 chamadas.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="editais-bottom">
+          <div class="receipt-wrap">
+            <div class="receipt">
+              <p class="receipt-title">Buscador de Editais</p>
+              <p class="receipt-sub">a conta do experimento</p>
+              <table>
+                <caption class="visually-hidden">Resultados medidos na execução do experimento</caption>
+                <tbody>
+                  <tr><th scope="row">Editais processados</th><td>22</td></tr>
+                  <tr class="receipt-note"><td colspan="2">de CNPq, FAPITEC e FINEP</td></tr>
+                  <tr><th scope="row">Tempo do conjunto</th><td>10 min 33 s</td></tr>
+                  <tr><th scope="row">Atributos certos</th><td>&gt; 90%</td></tr>
+                  <tr class="receipt-sep"><th scope="row">Custo total</th><td>US$ 0,14</td></tr>
+                  <tr><th scope="row">Por edital</th><td>≈ US$ 0,006</td></tr>
+                  <tr class="receipt-total"><th scope="row">Por mês, em operação</th><td>&lt; US$ 5</td></tr>
+                </tbody>
+              </table>
+              <p class="receipt-foot">cabe no orçamento :)</p>
+            </div>
+          </div>
+
+          <div class="notes">
+            <section class="note">
+              <h3>Cada peça no seu lugar</h3>
+              <p>Portal, núcleo de inteligência, banco e robô de coleta são independentes: dá para testar e trocar cada um sem mexer nos outros.</p>
+              <ul class="tags"><li>Next.js</li><li>React</li><li>TypeScript</li><li>Tailwind</li><li>Flask</li><li>Python</li><li>PostgreSQL</li><li>pgvector</li></ul>
+            </section>
+            <section class="note">
+              <h3>Sem ficar preso a ninguém</h3>
+              <p>Os modelos de embeddings e de linguagem são configuráveis: podem rodar localmente, pela OpenAI ou ser escolhidos automaticamente.</p>
+            </section>
+            <section class="note">
+              <h3>Quem usa também deu opinião</h3>
+              <p>Os protótipos passaram por rodadas de conversa com coordenadores de pós-graduação, que ajudaram a ajustar os campos, a busca e os critérios de notificação.</p>
+            </section>
+          </div>
+        </div>
+
+        <p class="footnote"><strong>No fim das contas:</strong> o pipeline funciona e é barato o bastante para uma universidade pública colocar em produção sem estourar o orçamento.</p>
+      </div>
+    </section>
+
+    <!-- 6 · APRENDIZADOS -->
+    <section class="section section-tint" id="frentes">
+      <div class="container">
+        <header class="section-head">
+          <span class="kicker">6. o que eu aprendi</span>
+          <h2>Três frentes bem diferentes, e os mesmos tropeços em todas.</h2>
+          <p>Usei o MCP em três situações: um sistema legado, uma implementação de terceiros que já estava em produção e um pipeline completo. Eram contextos bem diferentes, mas os obstáculos foram praticamente os mesmos.</p>
+        </header>
+
+        <div class="fronts">
+          <article class="card front">
+            <h3>ARIA</h3>
+            <p class="front-tag">de sistema legado para MCP</p>
+            <p>Mostrou, num ambiente real, a ideia central do projeto: um sistema da universidade virando uma fonte de contexto padronizada, sem que o agente precise conhecer o que tem por trás.</p>
+            <ul class="marks marks-yes">
+              <li>Servidor MCP próprio com cinco ferramentas</li>
+              <li>O agente escolhe a ferramenta e explica a escolha</li>
+              <li>Protótipo do futuro orquestrador</li>
+            </ul>
+          </article>
+
+          <article class="card front">
+            <h3>CHIP</h3>
+            <p class="front-tag">auditoria de um MCP em produção</p>
+            <p>Revisei as MCP Calendar Tools do CHIP, que já rodavam em produção, e encontrei descrições vagas, parâmetros sem padrão e retornos sem documentação.</p>
+            <ul class="marks marks-yes">
+              <li>Seis descrições reescritas com schemas explícitos</li>
+              <li>Uma condição de corrida em <em>CreateAppointment</em></li>
+              <li>Três ferramentas que faltavam</li>
+            </ul>
+          </article>
+
+          <article class="card front">
+            <h3>Buscador de Editais</h3>
+            <p class="front-tag">um pipeline de ponta a ponta</p>
+            <p>Testou o MCP como camada de contexto num caso de uso concreto, com qualidade, tempo e custo medidos numa execução real.</p>
+            <ul class="marks marks-yes">
+              <li>Mais de 90% de extração correta</li>
+              <li>Cerca de US$ 0,006 por edital</li>
+              <li>Provedores de IA que dá para trocar</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="next">
+          <div class="next-copy">
+            <span class="kicker kicker-sm">próximo passo</span>
+            <h3>O que falta para tudo isso funcionar junto</h3>
+            <p>Não estou propondo mais uma arquitetura genérica de orquestração; isso o mercado já está disputando. O que eu trago é a experiência de aplicar essas ideias na gestão de uma universidade pública brasileira, e o que essa experiência mostrou que não pode faltar.</p>
+          </div>
+
+          <ol class="needs">
+            <li><strong>Identidade e sessão</strong><span>saber quem fez cada chamada, com qual credencial e em qual contexto</span></li>
+            <li><strong>Trilha de auditoria</strong><span>registrar ferramentas, parâmetros e decisões de forma estruturada</span></li>
+            <li><strong>Contrato de dados</strong><span>entradas e saídas descritas com clareza, sem regra escondida</span></li>
+          </ol>
+        </div>
+
+        <div class="chip-gap">
+          <div class="chip-gap-copy">
+            <h3>O que faltava no CHIP</h3>
+            <p>Revisando as ferramentas em produção, apareceram operações que o fluxo precisava mas que não existiam no servidor.</p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="stack-sm">
+              <caption class="visually-hidden">Ferramentas ausentes identificadas na auditoria do CHIP</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Ferramenta que faltava</th>
+                  <th scope="col">Para quê</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><code>SearchContacts</code></th><td>Transformar um nome num identificador interno.</td></tr>
+                <tr><th scope="row"><code>GetNextAvailableSlot</code></th><td>Responder “qual o próximo horário?” sem fazer um monte de chamadas.</td></tr>
+                <tr><th scope="row"><code>CheckSlotAvailability</code></th><td>Conferir um horário específico sugerido pela pessoa.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENCERRAMENTO -->
+    <section class="closing">
+      <div class="container">
+        <div class="letter">
+          <img class="letter-avatar" src="assets/aria-avatar.png" alt="" width="84" height="84">
+          <span class="kicker">pra terminar</span>
+          <h2>O que fica deste ano</h2>
+          <p>Fica um caminho testado na prática: decisões documentadas, protótipos funcionando e uma lista honesta do que ainda falta para a STI/UFS adotar o MCP.</p>
+          <p>Obrigado por ter lido até aqui. Se quiser conversar sobre qualquer parte disso, me procura depois da apresentação.</p>
+          <p class="signature">Itor</p>
+          <div class="closing-actions">
+            <a class="btn btn-primary" href="#interface">Conversar com o ARIA de novo</a>
+            <a class="btn btn-ghost" href="#topo">Voltar ao começo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <p class="footer-name">Itor <span>· PIBITI UFS</span></p>
+        <p>Arquitetura de IA no COPIS/STI/UFS: microsserviços e Model Context Protocol. Trabalho final do Programa Institucional de Iniciação em Desenvolvimento Tecnológico e Inovação.</p>
+      </div>
+
+      <div class="footer-col">
+        <h2>Navegar</h2>
+        <a href="#problema">O problema</a>
+        <a href="#mcp">Model Context Protocol</a>
+        <a href="#aria">Assistente ARIA</a>
+        <a href="#editais">Buscador de Editais</a>
+        <a href="https://editais.dev.ufs.br/" target="_blank" rel="noopener">editais.dev.ufs.br ↗<span class="visually-hidden"> (abre em nova aba)</span></a>
+      </div>
+
+      <div class="footer-col">
+        <h2>Quem fez</h2>
+        <p>Itor Carlos Souza Queiroz<br><span>bolsista PIBITI · UFS</span></p>
+        <p>Período da bolsa<br><span>09/2025 a 08/2026</span></p>
+        <p>Área<br><span>Ciência da Computação · IA</span></p>
+      </div>
+
+      <div class="footer-col">
+        <h2>Instituições</h2>
+        <p>Universidade Federal de Sergipe</p>
+        <p>Pró-Reitoria de Pós-Graduação e Pesquisa</p>
+        <p>Agência de Inovação e Transferência de Tecnologia</p>
+        <p>COPIS/STI</p>
+      </div>
+    </div>
+
+    <div class="container footer-refs">
+      <details>
+        <summary>Referências principais</summary>
+        <ul>
+          <li>MODEL CONTEXT PROTOCOL. <em>What is the Model Context Protocol (MCP)?</em> Documentação oficial, 2026.</li>
+          <li>CARRARO, F. <em>Model Context Protocol (MCP): o guia definitivo do “conector universal” da IA</em>. Alura, 2026.</li>
+          <li>GUTOWSKA, A. <em>Model Context Protocol (MCP)</em>. IBM Think, 2026.</li>
+          <li>QUEIROZ, I. et al. <em>Buscador de Editais: Automatização da Busca de Editais na Pós-Graduação da UFS</em>. WTICIFES, 2026.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 · Universidade Federal de Sergipe</span>
+      <span>Obrigado por ter vindo até aqui</span>
+    </div>
+  </footer>
+
+  <dialog id="lightbox" aria-label="Imagem ampliada">
+    <button class="lb-close" type="button" aria-label="Fechar">×</button>
+    <img alt="">
+  </dialog>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
